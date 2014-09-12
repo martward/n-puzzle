@@ -12,7 +12,6 @@ Features:
 - The user will be able to restart the game while playing.
 - Optionally: The player will be able to load his own pictures.
 
-See the document images.docx for sketches of the app will look like.
 
 This will be the main game:
 
