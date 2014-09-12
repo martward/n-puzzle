@@ -14,5 +14,8 @@ Features:
 
 See the document images.docx for sketches of the app will look like.
 
+![oms](url) (copy raw link van png)
+Zorg dat project in de root staat ipv in een dir.
+
 The java package for images will be used to get sub images from an images which will then be scrambled.
 
