@@ -13,3 +13,6 @@ The project will use several classes which will be implemented.
 
 The app will need to use a small database to store the preferences and game states when the app is not running. This way the player can pick up where he left off if his session is interrupted.
 
+First version of the home screen:
+
+![oms](https://github.com/martward/n-puzzle/raw/master/doc/Home.png)
