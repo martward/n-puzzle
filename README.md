@@ -12,15 +12,10 @@ Features:
 - The user will be able to restart the game while playing.
 - Optionally: The player will be able to load his own pictures.
 
+See the document images.docx for sketches of the app will look like.
 
-This will be the main game:
-
-![oms](https://github.com/martward/n-puzzle/raw/master/doc/scetch_puzzle_app.png) 
-
-
-This will be the home menu:
-
-![oms](https://github.com/martward/n-puzzle/raw/master/doc/Menu.png) 
+![oms](url) (copy raw link van png)
+Zorg dat project in de root staat ipv in een dir.
 
 The java package for images will be used to get sub images from an images which will then be scrambled.
 
