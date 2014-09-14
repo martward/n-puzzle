@@ -1,4 +1,4 @@
-package com.example.martijn.n_puzzle;
+package nl.mprog.projects.nPuzzle10348190;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

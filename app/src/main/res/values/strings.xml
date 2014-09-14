@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">N-Puzzle</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">nPuzzle10348190</string>
     <string name="action_settings">Settings</string>
+    <string name="home_title">N-Puzzle</string>
+    <string name="home_play">Play</string>
+    <string name="home_difficulty">Difficulty</string>
+    <string name="home_image">Image</string>
 
 </resources>
