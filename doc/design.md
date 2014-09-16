@@ -1,5 +1,4 @@
 The game will have three major activities/views:
--	The Home activity will show the home screen and handle the buttons (play, image and difficulty). 
 -	The Image activity will show a list of the images which can be used to play.
 -	The Play activity will show the game and handle input from the player when he/she plays the game
 
@@ -13,6 +12,10 @@ The project will use several classes which will be implemented.
 
 The app will need to use a small database to store the preferences and game states when the app is not running. This way the player can pick up where he left off if his session is interrupted.
 
-First version of the home screen:
+First version of the home screen/image picker:
 
-![oms](https://github.com/martward/n-puzzle/raw/master/doc/Home.png)
+![oms](https://github.com/martward/n-puzzle/raw/master/doc/Imga_picker.png)
+
+First version of the game screen:
+
+![oms](https://github.com/martward/n-puzzle/raw/master/doc/Game.png)
