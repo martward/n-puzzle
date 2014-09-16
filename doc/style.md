@@ -2,20 +2,20 @@ Names:
 
 - all names of functions will be written in lowercase. 
   When a function name consists of more than one word, the words are seperated by a '_'.
-  eg: do_something(obj x)
+  Eg: do_something(obj x)
 - All constants will be written in uppercase and if the name consists of multiple words, 
   a '_' will be used to divide the words.
-  e.g: NUM_TILES
+  E.g: NUM_TILES
 - All other variables will be written with the camelback notation and the first letter in lowercase.
-  e.g: thisVariable
+  E.g: thisVariable
 - All classes will be written with the camelback notation and the first letter in uppercase.
-  e.g: ThisClass
+  E.g: ThisClass
 
 Style:
 
 - Every block of code that is nested will be indented 4 spaces from the code it is nested within.
 - Curly brackets are placed behind the code that will nest some other code, not on a new line.?
-e.g:
+E.g:
 
 function a_function(int x) {
     example
@@ -24,4 +24,4 @@ function a_function(int x) {
 
 - i,j and k will be used as variables for loops.
 - one-line comments will not use capitals for any words except proper nouns. 
-  e.g: // no capitals except for names like Martijn.
+  E.g: // no capitals except for names like Martijn.
