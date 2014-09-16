@@ -10,7 +10,12 @@ The project will use several classes which will be implemented.
 -	The game class will get all information about a game (which picture and what difficulty) and create a game to be played. This class will scramble the picture using getSubImage/4 from the java.awt.image library. It will also keep a record of the solution (the order of tiles defined by their id) and the current field and the public function which will calculate the score at the end of the game.
 -	The tile class will be a class which defines the tiles of the game. Each tile object will have an ID and an image (a subimage of the entire image).
 
-The app will need to use a small database to store the preferences and game states when the app is not running. This way the player can pick up where he left off if his session is interrupted.
+Some public functions which will be implemented are:
+- scramble_image(Image i), which will return a list of image objects which will then be used to assign an image to each tile.
+- randomize_puzzle(int i) which ill return a randomized list of integers the size of the number of tiles. This will be used to create the playing field.
+- swap_tiles(int i) which will return nothing, but swap a tile to the empty cell and update the information in the game object.
+
+
 
 First version of the home screen/image picker:
 
