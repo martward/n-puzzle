@@ -19,3 +19,7 @@ First version of the home screen/image picker:
 First version of the game screen:
 
 ![oms](https://github.com/martward/n-puzzle/raw/master/doc/Game.png)
+
+First version of the winning/end screen:
+
+![oms](https://github.com/martward/n-puzzle/raw/master/doc/Finish.png)
