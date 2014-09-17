@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="nl.mprog.projects.nPuzzle10348190.Game" >
+    <item android:id="@+id/settings_restart"
+        android:title="@string/action_restart"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/settings_difficulty"
+        android:title="@string/action_changeDifficulty"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/settings_image"
+        android:title="@string/action_changeImage"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>
