@@ -72,6 +72,7 @@ public class Home extends ActionBarActivity {
             System.out.println(drawableResourceId);
             Intent intent = new Intent(view.getContext(), Game.class);
             intent.putExtra("IMAGE_ID", drawableResourceId);
+            intent.putExtra("Difficulty", 0);
             startActivity(intent);
         }
     };

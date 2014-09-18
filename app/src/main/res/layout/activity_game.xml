@@ -9,12 +9,12 @@
     tools:context="nl.mprog.projects.nPuzzle10348190.Game"
     android:background="#ff000000">
 
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/selec_image"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-
 
 </RelativeLayout>
