@@ -5,8 +5,6 @@ package nl.mprog.projects.nPuzzle10348190;
  */
 
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.media.Image;
 
 
 public class Tile {

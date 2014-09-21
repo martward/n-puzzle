@@ -11,5 +11,7 @@
     <string name="home_image">Image</string>
     <string name="title_activity_activity_game">activity_game</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_show_image">ShowImage</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

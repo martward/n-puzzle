@@ -1,14 +1,9 @@
 package nl.mprog.projects.nPuzzle10348190;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.content.res.Resources;
-import android.database.DataSetObserver;
-import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -16,10 +11,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import java.io.*;
-import java.util.AbstractList;
-
 
 public class Home extends ActionBarActivity {
 
@@ -34,7 +25,7 @@ public class Home extends ActionBarActivity {
 
             @Override
             public int getCount() {
-                return 7;
+                return 5;
             }
 
             @Override
@@ -70,7 +61,7 @@ public class Home extends ActionBarActivity {
             String name = "puzzle_" + i;
             int drawableResourceId = adapterView.getContext().getResources().getIdentifier(name, "drawable", "nl.mprog.projects.nPuzzle10348190");
             System.out.println(drawableResourceId);
-            Intent intent = new Intent(view.getContext(), Game.class);
+            Intent intent = new Intent(view.getContext(), ShowImage.class);
             intent.putExtra("IMAGE_ID", drawableResourceId);
             intent.putExtra("Difficulty", 0);
             startActivity(intent);

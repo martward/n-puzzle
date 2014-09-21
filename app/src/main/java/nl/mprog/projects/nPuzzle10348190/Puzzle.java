@@ -9,21 +9,21 @@ public class Puzzle {
     Puzzle(int difficulty){
         switch(difficulty){
             case 0:
-                set_num_tiles(8);
-                set_current_state(8);
-                set_solution(8);
+                set_num_tiles(9);
+                set_current_state(9);
+                set_solution(9);
             case 1:
-                set_num_tiles(15);
-                set_current_state(15);
-                set_solution(15);
+                set_num_tiles(16);
+                set_current_state(16);
+                set_solution(16);
             case 3:
-                set_num_tiles(24);
-                set_current_state(24);
-                set_solution(24);
+                set_num_tiles(25);
+                set_current_state(25);
+                set_solution(25);
             default:
-                set_num_tiles(8);
-                set_current_state(8);
-                set_solution(8);
+                set_num_tiles(9);
+                set_current_state(9);
+                set_solution(9);
         }
     }
 
@@ -35,20 +35,25 @@ public class Puzzle {
         return NUM_TILES;
     }
 
+    public void set_current_state(int[] state){
+        CURRENT_STATE = state;
+    }
+
     public void set_current_state(int num) {
-        int[] currentState = new int[num+1];
-        if(num % 2 == 0) {
-            for(int i = 0; i < num; i++){
-                currentState[i] = num - (i+1);
-            }
-            currentState[num] = -1;
-        } else{
-            for (int i = 0; i < num - 2; i++) {
-                currentState[i] = num - (i+1);
+        int[] currentState = new int[num];
+        if(num % 2 != 0) {
+            for(int i = 1; i < num-1; i++){
+                currentState[i-1] = num - (i+1);
             }
             currentState[num-2] = 0;
-            currentState[num-1] = 1;
-            currentState[num] = -1;
+            currentState[num-1] = num-1;
+        } else{
+            for (int i = 1; i < num - 2; i++) {
+                currentState[i] = num - (i+1);
+            }
+            currentState[num-3] = 0;
+            currentState[num-2] = 1;
+            currentState[num-1] = num-1;
         }
         CURRENT_STATE = currentState;
     }
