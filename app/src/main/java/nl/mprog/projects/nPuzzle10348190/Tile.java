@@ -1,9 +1,5 @@
 package nl.mprog.projects.nPuzzle10348190;
 
-/**
- * Created by Martijn on 9/18/2014.
- */
-
 import android.graphics.Bitmap;
 
 

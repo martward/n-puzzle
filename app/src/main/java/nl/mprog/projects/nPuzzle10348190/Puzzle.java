@@ -80,8 +80,8 @@ public class Puzzle {
         boolean check = true;
         int[] solution = get_solution();
         int[] currentState = get_current_state();
-        for(int i = 0; i < get_num_tiles()+1; i++){
-            if(currentState[i] <= solution[i]){
+        for(int i = 0; i < get_num_tiles(); i++){
+            if(currentState[i] != solution[i]){
                 check = false;
             }
         }

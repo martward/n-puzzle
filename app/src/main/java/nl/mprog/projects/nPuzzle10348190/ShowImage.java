@@ -2,14 +2,9 @@ package nl.mprog.projects.nPuzzle10348190;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,10 +20,10 @@ public class ShowImage extends ActionBarActivity {
         setContentView(R.layout.activity_show_image);
         ImageView imageView = (ImageView)findViewById(R.id.showImage);
         Intent intent = getIntent();
-        int image_ID = intent.getIntExtra("IMAGE_ID", 0);
+        int imageId = intent.getIntExtra("IMAGE_ID", 0);
         int difficulty = intent.getIntExtra("DIFFICULTY", 0);
-        set_values(image_ID,difficulty);
-        imageView.setImageResource(image_ID);
+        set_values(imageId,difficulty);
+        imageView.setImageResource(imageId);
         Context context = getApplicationContext();
 
         CharSequence text = "Tab picture to start the game!";
@@ -41,15 +36,20 @@ public class ShowImage extends ActionBarActivity {
 
     }
 
-    public View.OnClickListener respondToClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intentOut = new Intent(view.getContext(), Game.class);
-            intentOut.putExtra("IMAGE_ID", get_image_id());
-            intentOut.putExtra("Difficulty", get_difficulty());
-            startActivity(intentOut);
-        }
-    };
+    public View.OnClickListener respondToClick;
+
+    {
+        respondToClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentOut = new Intent(view.getContext(), Game.class);
+                intentOut.putExtra("IMAGE_ID", get_image_id());
+                intentOut.putExtra("Difficulty", get_difficulty());
+                startActivity(intentOut);
+                finish();
+            }
+        };
+    }
 
 
     public static void set_values(int id, int diff){

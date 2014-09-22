@@ -5,9 +5,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-/**
- * Created by Martijn on 9/20/2014.
- */
 public class GameAdapter extends BaseAdapter {
 
 
