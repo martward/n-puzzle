@@ -23,14 +23,38 @@ public class Score extends ActionBarActivity {
         long time = intentIn.getLongExtra("TIME", 22);
         int imageId = intentIn.getIntExtra("IMAGE", 0);
 
-        System.out.println(difficulty);
-        System.out.println(moves);
-        System.out.println(time);
+        int timeHours = (int) (time/3600);
+        int timeMinutes = (int)(time - (timeHours * 3600))/60;
+        int timeSeconds = (int) (time - (timeHours*3600) - (timeMinutes*60));
 
-        TextView show_moves = (TextView)findViewById(R.id.showMoves);
-        show_moves.setText("" + moves);
-        TextView show_time = (TextView)findViewById(R.id.showTime);
-        show_time.setText(""+ time);
+        String printHours;
+        String printMinutes;
+        String printSeconds;
+
+        if(timeHours < 10) {
+            printHours = "0" + timeHours;
+        }else {
+            printHours = "" + timeHours;
+        }
+
+        if(timeMinutes < 10) {
+            printMinutes = "0" + timeMinutes;
+        } else {
+            printMinutes = "" + timeMinutes;
+        }
+
+        if(timeSeconds < 10) {
+            printSeconds = "0" + timeSeconds;
+        } else {
+            printSeconds = "" + timeSeconds;
+        }
+
+        String printTime = "" + printHours +  ":" + printMinutes + ":" + printSeconds;
+
+        TextView showMoves = (TextView)findViewById(R.id.showMoves);
+        showMoves.setText("" + moves);
+        TextView showTime = (TextView)findViewById(R.id.showTime);
+        showTime.setText(printTime);
         ImageView gameImage = (ImageView)findViewById(R.id.scoreImage);
         gameImage.setImageResource(imageId);
 

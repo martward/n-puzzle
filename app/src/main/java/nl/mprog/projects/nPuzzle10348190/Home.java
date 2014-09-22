@@ -81,9 +81,9 @@ public class Home extends ActionBarActivity {
             String name = "puzzle_" + i;
             int drawableResourceId = adapterView.getContext().getResources().getIdentifier(name, "drawable", "nl.mprog.projects.nPuzzle10348190");
             System.out.println(drawableResourceId);
-            Intent intent = new Intent(view.getContext(), ShowImage.class);
+            Intent intent = new Intent(view.getContext(), Game.class);
             intent.putExtra("IMAGE_ID", drawableResourceId);
-            intent.putExtra("Difficulty", 0);
+            intent.putExtra("DIFFICULTY", 0);
             startActivity(intent);
         }
     };

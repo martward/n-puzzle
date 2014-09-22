@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,10 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Game extends ActionBarActivity {
@@ -30,6 +36,8 @@ public class Game extends ActionBarActivity {
     private static Puzzle PUZZLE;
     private static int NUMBER_MOVES;
     private static long START_TIME;
+    private static final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +53,20 @@ public class Game extends ActionBarActivity {
         puzzle = new Puzzle(difficulty);
         set_puzzle(puzzle);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
 
         Bitmap imgImmutable = BitmapFactory.decodeResource(this.getBaseContext().getResources(), imageId);
         Bitmap img = imgImmutable.copy(Bitmap.Config.ARGB_8888, true);
 
         set_image_size(width, height, img);
         int numColumns = get_difficulty() + 3;
-        final int numCells = numColumns * numColumns;
+        int numCells = numColumns * numColumns;
         gameField.setNumColumns(numColumns);
-        final Tile[] allTiles = new Tile[numCells];
+        Tile[] allTiles = new Tile[numCells];
         int x;
         int y;
 
@@ -82,12 +90,30 @@ public class Game extends ActionBarActivity {
         allTiles[numCells-1] = new Tile(8, empty);
 
         set_all_tiles(allTiles);
-        scramble_image(puzzle);
+        puzzle.set_current_state(puzzle.get_solution());
 
         Adapter gameAdapter = new GameAdapter(numCells,allTiles,puzzle);
         gameField.setAdapter((GameAdapter)gameAdapter);
         set_adapter((GameAdapter) gameAdapter);
         gameField.setOnItemClickListener(respondToClick);
+
+        ((GameAdapter) gameAdapter).change();
+
+        show_toast("Take a look at the puzzle");
+
+
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        puzzle.set_current_state(numCells);
+        scramble_image(puzzle);
+
+
+        ((GameAdapter) gameAdapter).change();
 
         long timeStarted = System.nanoTime();
         set_start_time(timeStarted);
@@ -212,6 +238,7 @@ public class Game extends ActionBarActivity {
             }
         };
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
