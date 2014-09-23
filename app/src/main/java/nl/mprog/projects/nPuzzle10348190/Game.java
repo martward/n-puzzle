@@ -101,13 +101,7 @@ public class Game extends ActionBarActivity {
 
         show_toast("Take a look at the puzzle");
 
-
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        reset_num_moves();
 
         puzzle.set_current_state(numCells);
         scramble_image(puzzle);
@@ -398,6 +392,10 @@ public class Game extends ActionBarActivity {
 
     private static long get_start_time(){
         return START_TIME;
+    }
+
+    private static void reset_num_moves(){
+        NUMBER_MOVES = 0;
     }
 
     private static void set_num_moves(){

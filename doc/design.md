@@ -1,6 +1,7 @@
 The game will have three major activities/views:
 -	The Image activity will show a list of the images which can be used to play.
 -	The Play activity will show the game and handle input from the player when he/she plays the game
+-	The Finish activity will show the score when the game is finished
 
 There will also be two setting activities, these are parts of other activities:
 -	The first will be on the home screen and will be used to choose the difficulty
