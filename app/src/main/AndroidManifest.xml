@@ -25,12 +25,6 @@
             android:configChanges="orientation|keyboardHidden" >
         </activity>
         <activity
-            android:name=".ShowImage"
-            android:label="@string/title_activity_show_image"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" >
-        </activity>
-        <activity
             android:name=".Score"
             android:label="@string/title_activity_score"
             android:screenOrientation="portrait"

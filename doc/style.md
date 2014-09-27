@@ -25,3 +25,4 @@ function a_function(int x) {
 - i,j and k will be used as variables for loops.
 - one-line comments will not use capitals for any words except proper nouns. 
   E.g: // no capitals except for names like Martijn.
+- multi-line comment will have normal grammar rules.

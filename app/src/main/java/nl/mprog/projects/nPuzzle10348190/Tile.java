@@ -16,10 +16,6 @@ public class Tile {
         ID = id;
     }
 
-    public int get_id(){
-        return ID;
-    }
-
     public void set_image(Bitmap im){
         IMAGE = im;
     }

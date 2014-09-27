@@ -9,30 +9,22 @@ public class Puzzle {
     Puzzle(int difficulty){
         switch(difficulty){
             case 0:
-                set_num_tiles(9);
+                NUM_TILES = 9;
                 set_current_state(9);
                 set_solution(9);
             case 1:
-                set_num_tiles(16);
+                NUM_TILES = 16;
                 set_current_state(16);
                 set_solution(16);
             case 3:
-                set_num_tiles(25);
+                NUM_TILES = 25;
                 set_current_state(25);
                 set_solution(25);
             default:
-                set_num_tiles(9);
+                NUM_TILES = 9;
                 set_current_state(9);
                 set_solution(9);
         }
-    }
-
-    public void set_num_tiles(int num){
-        NUM_TILES = num;
-    }
-
-    public int get_num_tiles(){
-        return NUM_TILES;
     }
 
     public void set_current_state(int[] state){
@@ -76,12 +68,13 @@ public class Puzzle {
         return SOLUTION;
     }
 
+    /*
+    Checks if the game is finished by comparing the current state to the solution
+     */
     public boolean check_solution(){
         boolean check = true;
-        int[] solution = get_solution();
-        int[] currentState = get_current_state();
-        for(int i = 0; i < get_num_tiles(); i++){
-            if(currentState[i] != solution[i]){
+        for(int i = 0; i < NUM_TILES; i++){
+            if(CURRENT_STATE[i] != SOLUTION[i]){
                 check = false;
             }
         }

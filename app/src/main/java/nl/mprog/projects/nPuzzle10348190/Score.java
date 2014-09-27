@@ -1,7 +1,6 @@
 package nl.mprog.projects.nPuzzle10348190;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,11 +17,13 @@ public class Score extends ActionBarActivity {
         setContentView(R.layout.activity_score);
 
         Intent intentIn = getIntent();
-        int difficulty = intentIn.getIntExtra("DIFFICULTY", 0);
         int moves = intentIn.getIntExtra("MOVES", 100);
         long time = intentIn.getLongExtra("TIME", 22);
         int imageId = intentIn.getIntExtra("IMAGE", 0);
 
+        /*
+        The program transforms the number of seconds in to a time stamp with hours, minutes and seconds.
+         */
         int timeHours = (int) (time/3600);
         int timeMinutes = (int)(time - (timeHours * 3600))/60;
         int timeSeconds = (int) (time - (timeHours*3600) - (timeMinutes*60));
@@ -30,7 +31,6 @@ public class Score extends ActionBarActivity {
         String printHours;
         String printMinutes;
         String printSeconds;
-
         if(timeHours < 10) {
             printHours = "0" + timeHours;
         }else {
