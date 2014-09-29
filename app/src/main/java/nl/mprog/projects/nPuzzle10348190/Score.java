@@ -1,15 +1,19 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 public class Score extends ActionBarActivity {
+
+    private static int DIFFICULTY;
+    private static int IMAGE_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +23,8 @@ public class Score extends ActionBarActivity {
         Intent intentIn = getIntent();
         int moves = intentIn.getIntExtra("MOVES", 100);
         long time = intentIn.getLongExtra("TIME", 22);
-        int imageId = intentIn.getIntExtra("IMAGE", 0);
+        IMAGE_ID = intentIn.getIntExtra("IMAGE", 0);
+        DIFFICULTY = intentIn.getIntExtra("DIFFICULTY", 0);
 
         /*
         The program transforms the number of seconds in to a time stamp with hours, minutes and seconds.
@@ -56,24 +61,35 @@ public class Score extends ActionBarActivity {
         TextView showTime = (TextView)findViewById(R.id.showTime);
         showTime.setText(printTime);
         ImageView gameImage = (ImageView)findViewById(R.id.scoreImage);
-        gameImage.setImageResource(imageId);
+        gameImage.setImageResource(IMAGE_ID);
+
+        Button restart = (Button)findViewById(R.id.finishRestart);
+        Button changeImage = (Button)findViewById(R.id.finishChangeImage);
+
+        restart.setOnClickListener(respondToClick);
+        changeImage.setOnClickListener(respondToClick);
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.score, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return id == R.id.settings_restart || super.onOptionsItemSelected(item);
-    }
-
+    private View.OnClickListener respondToClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Context context = getApplicationContext();
+            switch (view.getId()){
+                case R.id.finishRestart:
+                    Intent restartIntent = new Intent(context, Game.class);
+                    restartIntent.putExtra("DIFFICULTY", DIFFICULTY);
+                    restartIntent.putExtra("IMAGE_ID", IMAGE_ID);
+                    startActivity(restartIntent);
+                    finish();
+                    break;
+                case R.id.finishChangeImage:
+                    Intent homeIntent = new Intent(context, Home.class);
+                    startActivity(homeIntent);
+                    finish();
+                    break;
+            }
+        }
+    };
 
 }

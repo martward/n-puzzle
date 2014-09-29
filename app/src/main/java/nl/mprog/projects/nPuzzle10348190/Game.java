@@ -41,6 +41,7 @@ public class Game extends ActionBarActivity {
         Intent intent = getIntent();
         IMAGE_ID = intent.getIntExtra("IMAGE_ID", 0);
         DIFFICULTY = intent.getIntExtra("DIFFICULTY", 0);
+        System.out.println(DIFFICULTY);
         PUZZLE = new Puzzle(DIFFICULTY);
 
         // preperations to scale the image
@@ -56,8 +57,9 @@ public class Game extends ActionBarActivity {
         set_tiles();
 
         PUZZLE.set_current_state(PUZZLE.get_solution());
-
-        Adapter gameAdapter = new GameAdapter((DIFFICULTY+3)*(DIFFICULTY+3),ALL_TILES,PUZZLE);
+        //System.out.println(ALL_TILES.length);
+        //System.out.println(PUZZLE.get_current_state().length);
+        Adapter gameAdapter = new GameAdapter(ALL_TILES.length,ALL_TILES,PUZZLE);
         GAME_VIEW.setAdapter((GameAdapter)gameAdapter);
         ADAPTER = (GameAdapter)gameAdapter;
         GAME_VIEW.setOnItemClickListener(respondToClick);
@@ -72,6 +74,7 @@ public class Game extends ActionBarActivity {
             @Override
             public void run(){
                 int numCells = ALL_TILES.length;
+                //System.out.println(numCells);
                 PUZZLE.set_current_state(numCells);
                 scramble_image(PUZZLE);
                 ADAPTER.change();
@@ -108,7 +111,6 @@ public class Game extends ActionBarActivity {
         }
         Bitmap emptyTemp = BitmapFactory.decodeResource(this.getBaseContext().getResources(), R.drawable.empty);
         Bitmap empty = Bitmap.createBitmap(emptyTemp,0,0,TILE_WIDTH,TILE_HEIGHT);
-
         allTiles[numCells-1] = new Tile(numCells-1, empty);
 
         ALL_TILES = allTiles;
@@ -243,15 +245,45 @@ public class Game extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == R.id.settings_restart){
+        if(id == R.id.settings_easy){
+            if(DIFFICULTY != 0){
+                Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
+                intent.putExtra("DIFFICULTY", 0);
+                intent.putExtra("IMAGE_ID", IMAGE_ID);
+                startActivity(intent);
+                finish();
+            }else{
+                show_toast("Difficulty is already Easy.");
+            }
+        } else if(id == R.id.settings_medium){
+            if(DIFFICULTY != 1){
+                Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
+                intent.putExtra("DIFFICULTY", 1);
+                intent.putExtra("IMAGE_ID", IMAGE_ID);
+                startActivity(intent);
+                finish();
+            }else{
+                show_toast("Difficulty is already Medium.");
+            }
+        } else if(id == R.id.settings_hard){
+            if(DIFFICULTY != 2){
+                Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
+                intent.putExtra("DIFFICULTY", 2);
+                intent.putExtra("IMAGE_ID", IMAGE_ID);
+                startActivity(intent);
+                finish();
+            }else{
+                show_toast("Difficulty is already Hard.");
+            }
+
+
+        } else if(id == R.id.settings_restart){
             Intent restartIntent = new Intent(GAME_VIEW.getContext(), Game.class);
             restartIntent.putExtra("IMAGE_ID", IMAGE_ID);
             restartIntent.putExtra("DIFFICULTY", DIFFICULTY);
             startActivity(restartIntent);
             finish();
-        }
-
-        if(id == R.id.settings_image){
+        } else if(id == R.id.settings_image){
             Intent homeIntent = new Intent(GAME_VIEW.getContext(), Home.class);
             startActivity(homeIntent);
             finish();

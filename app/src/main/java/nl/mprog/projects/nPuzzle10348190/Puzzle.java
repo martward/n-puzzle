@@ -12,18 +12,17 @@ public class Puzzle {
                 NUM_TILES = 9;
                 set_current_state(9);
                 set_solution(9);
+                break;
             case 1:
                 NUM_TILES = 16;
                 set_current_state(16);
                 set_solution(16);
-            case 3:
+                break;
+            case 2:
                 NUM_TILES = 25;
                 set_current_state(25);
                 set_solution(25);
-            default:
-                NUM_TILES = 9;
-                set_current_state(9);
-                set_solution(9);
+                break;
         }
     }
 
@@ -41,13 +40,20 @@ public class Puzzle {
             currentState[num-1] = num-1;
         } else{
             for (int i = 1; i < num - 2; i++) {
-                currentState[i] = num - (i+1);
+                currentState[i-1] = num - (i+1);
             }
             currentState[num-3] = 0;
             currentState[num-2] = 1;
             currentState[num-1] = num-1;
         }
         CURRENT_STATE = currentState;
+        /*
+        System.out.println("------");
+        for(int j = 0; j < currentState.length;j++){
+            System.out.println(currentState[j]);
+        }
+        System.out.println("------");
+        */
     }
 
     public int[] get_current_state(){
@@ -55,12 +61,14 @@ public class Puzzle {
     }
 
     public void set_solution(int num){
-        int[] solution = new int[num+1];
-
+        System.out.print("Creating solution with: ");
+        System.out.print(NUM_TILES);
+        System.out.println(" tiles.");
+        int[] solution = new int[num];
         for(int i = 0; i < num; i ++){
             solution[i] = i;
         }
-        solution[num] = -1;
+        //solution[num] = -1;
         SOLUTION = solution;
     }
 

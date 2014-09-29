@@ -4,7 +4,9 @@
     <string name="app_name">nPuzzle10348190</string>
     <string name="action_restart">Restart</string>
     <string name="action_changeImage">Change <br /> image</string>
-    <string name="action_changeDifficulty">Change <br /> difficulty</string>
+    <string name="action_changeDifficultyEasy">Easy</string>
+    <string name="action_changeDifficultyMedium">Medium</string>
+    <string name="action_changeDifficultyHard">Hard</string>
     <string name="home_title">N-Puzzle</string>
     <string name="home_play">Play</string>
     <string name="home_difficulty">Difficulty</string>
