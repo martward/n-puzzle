@@ -2,6 +2,8 @@ package nl.mprog.projects.nPuzzle10348190;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.DatabaseUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,9 +15,13 @@ public class Home extends ActionBarActivity {
 
     private static GridView VIEW;
     private static int COUNT_IMAGES;
+    private static int DIFFICULTY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("Starting Home");
+        handle_preferences();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -39,8 +45,10 @@ public class Home extends ActionBarActivity {
             int drawableResourceId = adapterView.getContext().getResources().getIdentifier(name, "drawable", "nl.mprog.projects.nPuzzle10348190");
             Intent intent = new Intent(view.getContext(), Game.class);
             intent.putExtra("IMAGE_ID", drawableResourceId);
-            intent.putExtra("DIFFICULTY", 0);
+            intent.putExtra("DIFFICULTY", DIFFICULTY);
+            intent.putExtra("LOAD", false );
             startActivity(intent);
+            finish();
         }
     };
     /*
@@ -58,6 +66,27 @@ public class Home extends ActionBarActivity {
             }
         }
         COUNT_IMAGES = countImages-1;
+    }
+
+    public void handle_preferences(){
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+
+        if(!pref.contains("currentState")){
+            if(!pref.contains("difficulty")){
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("difficulty", 0);
+                editor.commit();
+                DIFFICULTY = 0;
+            } else{
+                DIFFICULTY = pref.getInt("difficulty", DIFFICULTY);
+            }
+        } else {
+            Intent loadGame = new Intent(this.getBaseContext(),Game.class);
+            loadGame.putExtra("LOAD", true );
+            startActivity(loadGame);
+            finish();
+        }
+
     }
 
 }

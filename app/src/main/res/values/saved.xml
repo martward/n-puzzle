@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="difficulty"> 0 </integer>
+    <integer name="numMoves"> 0 </integer>
+    <integer name="timePassed"> 0 </integer>
+    <integer-array name="currentState"></integer-array>
+</resources>

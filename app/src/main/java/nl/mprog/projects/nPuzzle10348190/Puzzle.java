@@ -47,13 +47,6 @@ public class Puzzle {
             currentState[num-1] = num-1;
         }
         CURRENT_STATE = currentState;
-        /*
-        System.out.println("------");
-        for(int j = 0; j < currentState.length;j++){
-            System.out.println(currentState[j]);
-        }
-        System.out.println("------");
-        */
     }
 
     public int[] get_current_state(){
@@ -61,9 +54,6 @@ public class Puzzle {
     }
 
     public void set_solution(int num){
-        System.out.print("Creating solution with: ");
-        System.out.print(NUM_TILES);
-        System.out.println(" tiles.");
         int[] solution = new int[num];
         for(int i = 0; i < num; i ++){
             solution[i] = i;

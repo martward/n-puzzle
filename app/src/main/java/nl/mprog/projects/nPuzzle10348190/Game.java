@@ -3,6 +3,7 @@ package nl.mprog.projects.nPuzzle10348190;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.os.Handler;
+
+import java.util.Map;
+import java.util.Set;
 
 
 public class Game extends ActionBarActivity {
@@ -31,60 +35,22 @@ public class Game extends ActionBarActivity {
     private static int NUMBER_MOVES;
     private static long START_TIME;
     private static GridView GAME_VIEW;
+    private static int PASSED_TIME;
+    private static boolean BACK_PRESSED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         GAME_VIEW = (GridView)findViewById(R.id.gameView);
-
         Intent intent = getIntent();
-        IMAGE_ID = intent.getIntExtra("IMAGE_ID", 0);
-        DIFFICULTY = intent.getIntExtra("DIFFICULTY", 0);
-        System.out.println(DIFFICULTY);
-        PUZZLE = new Puzzle(DIFFICULTY);
-
-        // preperations to scale the image
-        DisplayMetrics metrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        Bitmap imgImmutable = BitmapFactory.decodeResource(this.getBaseContext().getResources(), IMAGE_ID);
-        Bitmap img = imgImmutable.copy(Bitmap.Config.ARGB_8888, true);
-        //scaling the image
-        set_image_size(width, height, img);
-
-        set_tiles();
-
-        PUZZLE.set_current_state(PUZZLE.get_solution());
-        //System.out.println(ALL_TILES.length);
-        //System.out.println(PUZZLE.get_current_state().length);
-        Adapter gameAdapter = new GameAdapter(ALL_TILES.length,ALL_TILES,PUZZLE);
-        GAME_VIEW.setAdapter((GameAdapter)gameAdapter);
-        ADAPTER = (GameAdapter)gameAdapter;
-        GAME_VIEW.setOnItemClickListener(respondToClick);
-
-        show_toast("Take a look at the puzzle");
-
-        NUMBER_MOVES = 0;
-        /*
-        Now the program waits for 3 seconds and then scrambles the image.
-         */
-        Runnable r = new Runnable() {
-            @Override
-            public void run(){
-                int numCells = ALL_TILES.length;
-                //System.out.println(numCells);
-                PUZZLE.set_current_state(numCells);
-                scramble_image(PUZZLE);
-                ADAPTER.change();
-            }
-        };
-
-        Handler h = new Handler();
-        h.postDelayed(r, 3000);
-
-        START_TIME = System.nanoTime();
+        boolean load = intent.getBooleanExtra("LOAD",false);
+        Context context = getApplicationContext();
+        if(!load){
+            initialize_game(context);
+        } else{
+            load_game(context);
+        }
     }
 
 
@@ -93,7 +59,7 @@ public class Game extends ActionBarActivity {
     These tiles are objects with an id and an image, which is a subimage of the total image which
     was selected on the home screen.
      */
-    public void set_tiles(){
+    private void set_tiles(){
         int numColumns = DIFFICULTY + 3;
         int numCells = numColumns * numColumns;
         GAME_VIEW.setNumColumns(numColumns);
@@ -114,6 +80,129 @@ public class Game extends ActionBarActivity {
         allTiles[numCells-1] = new Tile(numCells-1, empty);
 
         ALL_TILES = allTiles;
+    }
+
+    /*
+    Whenever the game is paused, the state is saved so even if the app is killed by android because of
+    a shortage of memory, the game will be available for the user when he returns.
+     */
+    @Override
+    public void onPause(){
+        if(!BACK_PRESSED) {
+            System.out.println("Saving");
+            SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("difficulty", DIFFICULTY);
+            editor.putInt("moves", NUMBER_MOVES);
+            long endTime = System.nanoTime();
+            int totalTime = (int) ((endTime - START_TIME) / 1000000000) + PASSED_TIME;
+            editor.putInt("time", totalTime);
+            String str = "";
+            int[] currentState = PUZZLE.get_current_state();
+            int i;
+            for (i = 0; i < currentState.length - 1; i++) {
+                str = str + currentState[i] + ",";
+            }
+            str = str + currentState[i];
+            editor.putString("currentState", str);
+            editor.putInt("imageId", IMAGE_ID);
+            editor.commit();
+            super.onPause();
+        }else{
+            super.onPause();
+        }
+    }
+
+    /*
+    Initialized a new game if previous game was ended.
+     */
+    private void initialize_game(Context context){
+        BACK_PRESSED = false;
+        Intent intent = getIntent();
+        IMAGE_ID = intent.getIntExtra("IMAGE_ID", 0);
+        DIFFICULTY = intent.getIntExtra("DIFFICULTY", 0);
+        PUZZLE = new Puzzle(DIFFICULTY);
+
+        set_image_tiles(context);
+
+        PUZZLE.set_current_state(PUZZLE.get_solution());
+
+        set_adapter();
+
+        show_toast("Take a look at the puzzle");
+
+        NUMBER_MOVES = 0;
+        /*
+        Now the program waits for 3 seconds and then scrambles the image.
+         */
+        Runnable r = new Runnable() {
+            @Override
+            public void run(){
+                int numCells = ALL_TILES.length;
+                PUZZLE.set_current_state(numCells);
+                scramble_image(PUZZLE);
+                ADAPTER.change();
+            }
+        };
+
+        Handler h = new Handler();
+        h.postDelayed(r, 3000);
+
+        START_TIME = System.nanoTime();
+        PASSED_TIME = 0;
+    }
+
+    /*
+    Resizes the image and creates the tiles for the game.
+     */
+    private void set_image_tiles(Context context){
+        // preperations to scale the image
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        Bitmap imgImmutable = BitmapFactory.decodeResource(context.getResources(), IMAGE_ID);
+        Bitmap img = imgImmutable.copy(Bitmap.Config.ARGB_8888, true);
+        //scaling the image
+        set_image_size(width, height, img);
+
+        set_tiles();
+    }
+
+    /*
+    Loads a game when all data is present.
+     */
+    private void load_game(Context context){
+        BACK_PRESSED = false;
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+        DIFFICULTY = pref.getInt("difficulty", 0);
+        NUMBER_MOVES = pref.getInt("moves", 0);
+        PASSED_TIME = pref.getInt("time", 0);
+        IMAGE_ID = pref.getInt("imageId", 0);
+        PUZZLE = new Puzzle(DIFFICULTY);
+        set_image_tiles(context);
+        String currentState = pref.getString("currentState", "");
+        String[] state = currentState.split(",");
+        int[] newState = new int[state.length];
+        for(int i = 0; i < state.length;i++){
+            newState[i] = Integer.parseInt(state[i]);
+        }
+
+        set_adapter();
+
+        PUZZLE.set_current_state(newState);
+        scramble_image(PUZZLE);
+        ADAPTER.change();
+    }
+
+    /*
+    Sets the adapter for the gridview.
+     */
+    private void set_adapter(){
+        Adapter gameAdapter = new GameAdapter(ALL_TILES.length,ALL_TILES,PUZZLE);
+        GAME_VIEW.setAdapter((GameAdapter)gameAdapter);
+        ADAPTER = (GameAdapter)gameAdapter;
+        GAME_VIEW.setOnItemClickListener(respondToClick);
     }
 
     /*
@@ -247,6 +336,8 @@ public class Game extends ActionBarActivity {
 
         if(id == R.id.settings_easy){
             if(DIFFICULTY != 0){
+                delete_saved_game();
+                save_difficulty(0);
                 Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
                 intent.putExtra("DIFFICULTY", 0);
                 intent.putExtra("IMAGE_ID", IMAGE_ID);
@@ -257,6 +348,8 @@ public class Game extends ActionBarActivity {
             }
         } else if(id == R.id.settings_medium){
             if(DIFFICULTY != 1){
+                delete_saved_game();
+                save_difficulty(1);
                 Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
                 intent.putExtra("DIFFICULTY", 1);
                 intent.putExtra("IMAGE_ID", IMAGE_ID);
@@ -267,6 +360,8 @@ public class Game extends ActionBarActivity {
             }
         } else if(id == R.id.settings_hard){
             if(DIFFICULTY != 2){
+                delete_saved_game();
+                save_difficulty(2);
                 Intent intent = new Intent(GAME_VIEW.getContext(),Game.class);
                 intent.putExtra("DIFFICULTY", 2);
                 intent.putExtra("IMAGE_ID", IMAGE_ID);
@@ -278,12 +373,15 @@ public class Game extends ActionBarActivity {
 
 
         } else if(id == R.id.settings_restart){
+            delete_saved_game();
             Intent restartIntent = new Intent(GAME_VIEW.getContext(), Game.class);
             restartIntent.putExtra("IMAGE_ID", IMAGE_ID);
             restartIntent.putExtra("DIFFICULTY", DIFFICULTY);
             startActivity(restartIntent);
             finish();
         } else if(id == R.id.settings_image){
+            BACK_PRESSED = true;
+            delete_saved_game();
             Intent homeIntent = new Intent(GAME_VIEW.getContext(), Home.class);
             startActivity(homeIntent);
             finish();
@@ -298,7 +396,7 @@ public class Game extends ActionBarActivity {
     Depending on the ratio between de width of the image and its height, the image will either be fitted
     to the width of the screen or the height of the screen.
      */
-    public static void set_image_size(int screenWidth, int screenHeight, Bitmap img){
+    private void set_image_size(int screenWidth, int screenHeight, Bitmap img){
         int imageWidth = img.getWidth();
         int imageHeight = img.getHeight();
         int newImageWidth = imageWidth;
@@ -327,10 +425,32 @@ public class Game extends ActionBarActivity {
     }
 
     /*
+    Saves the difficulty when it's changed.
+    This is a setting which will be kept even when the app is closed.
+     */
+    private void save_difficulty(int difficulty){
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("difficulty");
+        editor.putInt("difficulty", difficulty);
+        editor.commit();
+    }
+
+    /*
+    Modifies what happens when the user goes back to the home screen.
+     */
+    public void onBackPressed(){
+        BACK_PRESSED = true;
+        delete_saved_game();
+        Intent homeIntent = new Intent(GAME_VIEW.getContext(),Home.class);
+        startActivity(homeIntent);
+        finish();
+    }
+
+    /*
     This function scrambles the image after it has been shown to the user.
      */
-
-    public void scramble_image(Puzzle puzzle){
+    private void scramble_image(Puzzle puzzle){
         int[] begin = puzzle.get_current_state();
         Tile[] allTiles = ALL_TILES;
         Tile[] newTileOrder = new Tile[ALL_TILES.length];
@@ -348,7 +468,7 @@ public class Game extends ActionBarActivity {
     new intent will be created and the user will be shown the Score activity.
      */
 
-    public void swap_tiles(int tile1, int tile2, int[] currentState, View view){
+    private void swap_tiles(int tile1, int tile2, int[] currentState, View view){
         int tempTile = currentState[tile2];
         currentState[tile2] = currentState[tile1];
         currentState[tile1] = tempTile;
@@ -367,8 +487,9 @@ public class Game extends ActionBarActivity {
 
 
         if(PUZZLE.check_solution() & NUMBER_MOVES > 2){
+            delete_saved_game();
             long endTime = System.nanoTime();
-            long totalTime = (endTime - START_TIME)/1000000000;
+            long totalTime = ((endTime - START_TIME)/1000000000) + PASSED_TIME;
 
             Intent intentOut = new Intent(view.getContext(), Score.class);
             intentOut.putExtra("TIME", totalTime);
@@ -382,10 +503,19 @@ public class Game extends ActionBarActivity {
     /*
     This function takes a string and prints a short toast.
      */
-    public void show_toast(String str){
+    private void show_toast(String str){
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, str, duration);
         toast.show();
+    }
+
+    private void delete_saved_game(){
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        editor.putInt("difficulty", DIFFICULTY);
+        editor.commit();
     }
 }
