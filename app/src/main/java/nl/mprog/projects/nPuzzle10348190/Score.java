@@ -1,5 +1,15 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+
+This activity shows the user how much moves and time he/she needed to complete the puzzle.
+There is also a picture present of the puzzle which was completed, as well as two buttons to choose
+another image or to restart.
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;

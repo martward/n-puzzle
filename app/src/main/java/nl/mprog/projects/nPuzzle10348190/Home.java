@@ -1,5 +1,17 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+
+This activity is opened when the app is opened, or when te user decided to return to this menu from
+the game or the score screen. This activity checks if a preferred difficulty is saved, and otherwise
+sets it to easy. If it is saved it will load this difficulty. It then checks whether a saved game is
+present and starts a new intent to load the game if this is the case. If this is not the case the
+activity will show the images which are available to the user. The user can select an image by
+simply tapping it.
+*/
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,6 +80,12 @@ public class Home extends ActionBarActivity {
         COUNT_IMAGES = countImages-1;
     }
 
+    /*
+    This function checks if a game state is stored in AppData by checking if currentState is set.
+    If so, Game.class will be called with the message to load a previous game.
+    Otherwise the function will check if the difficulty is set and load it or set it depending on
+    the check.
+     */
     public void handle_preferences(){
         SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
 

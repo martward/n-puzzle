@@ -1,5 +1,19 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+
+This Activity is responsible for playing the game.
+It either starts a new game or loads a previous saved game.
+If a new game is initialized, the chosen image is resized and cut up in tiles.
+A new Puzzle object is created and a gridview is made to represent the game.
+When the game is paused, the entire state is saved.
+If the user presses back, changes the difficulty, restarts the game or chooses another image,
+the gamestate is removed from memory. The gamestate is also removed when the player has completed the
+puzzle, and the player is redirected to the activity which shows the score.
+ */
 
 import android.content.Context;
 import android.content.Intent;
@@ -82,36 +96,6 @@ public class Game extends ActionBarActivity {
         ALL_TILES = allTiles;
     }
 
-    /*
-    Whenever the game is paused, the state is saved so even if the app is killed by android because of
-    a shortage of memory, the game will be available for the user when he returns.
-     */
-    @Override
-    public void onPause(){
-        if(!BACK_PRESSED) {
-            System.out.println("Saving");
-            SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putInt("difficulty", DIFFICULTY);
-            editor.putInt("moves", NUMBER_MOVES);
-            long endTime = System.nanoTime();
-            int totalTime = (int) ((endTime - START_TIME) / 1000000000) + PASSED_TIME;
-            editor.putInt("time", totalTime);
-            String str = "";
-            int[] currentState = PUZZLE.get_current_state();
-            int i;
-            for (i = 0; i < currentState.length - 1; i++) {
-                str = str + currentState[i] + ",";
-            }
-            str = str + currentState[i];
-            editor.putString("currentState", str);
-            editor.putInt("imageId", IMAGE_ID);
-            editor.commit();
-            super.onPause();
-        }else{
-            super.onPause();
-        }
-    }
 
     /*
     Initialized a new game if previous game was ended.
@@ -152,22 +136,6 @@ public class Game extends ActionBarActivity {
         PASSED_TIME = 0;
     }
 
-    /*
-    Resizes the image and creates the tiles for the game.
-     */
-    private void set_image_tiles(Context context){
-        // preperations to scale the image
-        DisplayMetrics metrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        Bitmap imgImmutable = BitmapFactory.decodeResource(context.getResources(), IMAGE_ID);
-        Bitmap img = imgImmutable.copy(Bitmap.Config.ARGB_8888, true);
-        //scaling the image
-        set_image_size(width, height, img);
-
-        set_tiles();
-    }
 
     /*
     Loads a game when all data is present.
@@ -424,27 +392,22 @@ public class Game extends ActionBarActivity {
         TILE_WIDTH = tileWidth;
     }
 
-    /*
-    Saves the difficulty when it's changed.
-    This is a setting which will be kept even when the app is closed.
-     */
-    private void save_difficulty(int difficulty){
-        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove("difficulty");
-        editor.putInt("difficulty", difficulty);
-        editor.commit();
-    }
 
     /*
-    Modifies what happens when the user goes back to the home screen.
+    Resizes the image and creates the tiles for the game.
      */
-    public void onBackPressed(){
-        BACK_PRESSED = true;
-        delete_saved_game();
-        Intent homeIntent = new Intent(GAME_VIEW.getContext(),Home.class);
-        startActivity(homeIntent);
-        finish();
+    private void set_image_tiles(Context context){
+        // preperations to scale the image
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        Bitmap imgImmutable = BitmapFactory.decodeResource(context.getResources(), IMAGE_ID);
+        Bitmap img = imgImmutable.copy(Bitmap.Config.ARGB_8888, true);
+        //scaling the image
+        set_image_size(width, height, img);
+
+        set_tiles();
     }
 
     /*
@@ -510,6 +473,19 @@ public class Game extends ActionBarActivity {
         toast.show();
     }
 
+    /*
+    Saves the difficulty when it's changed.
+    This is a setting which will be kept even when the app is closed.
+     */
+    private void save_difficulty(int difficulty){
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("difficulty");
+        editor.putInt("difficulty", difficulty);
+        editor.commit();
+    }
+
+
     private void delete_saved_game(){
         SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -518,4 +494,48 @@ public class Game extends ActionBarActivity {
         editor.putInt("difficulty", DIFFICULTY);
         editor.commit();
     }
+
+
+    /*
+    Whenever the game is paused, the state is saved so even if the app is killed by android because of
+    a shortage of memory, the game will be available for the user when he returns.
+    */
+    @Override
+    public void onPause(){
+        if(!BACK_PRESSED) {
+            System.out.println("Saving");
+            SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("difficulty", DIFFICULTY);
+            editor.putInt("moves", NUMBER_MOVES);
+            long endTime = System.nanoTime();
+            int totalTime = (int) ((endTime - START_TIME) / 1000000000) + PASSED_TIME;
+            editor.putInt("time", totalTime);
+            String str = "";
+            int[] currentState = PUZZLE.get_current_state();
+            int i;
+            for (i = 0; i < currentState.length - 1; i++) {
+                str = str + currentState[i] + ",";
+            }
+            str = str + currentState[i];
+            editor.putString("currentState", str);
+            editor.putInt("imageId", IMAGE_ID);
+            editor.commit();
+            super.onPause();
+        }else{
+            super.onPause();
+        }
+    }
+
+    /*
+    Modifies what happens when the user goes back to the home screen.
+     */
+    public void onBackPressed(){
+        BACK_PRESSED = true;
+        delete_saved_game();
+        Intent homeIntent = new Intent(GAME_VIEW.getContext(),Home.class);
+        startActivity(homeIntent);
+        finish();
+    }
+
 }

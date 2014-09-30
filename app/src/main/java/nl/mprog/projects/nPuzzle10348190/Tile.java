@@ -1,7 +1,12 @@
 package nl.mprog.projects.nPuzzle10348190;
 
-import android.graphics.Bitmap;
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+ */
 
+import android.graphics.Bitmap;
 
 public class Tile {
     private int ID;

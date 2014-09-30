@@ -1,5 +1,11 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+ */
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

@@ -1,5 +1,11 @@
 package nl.mprog.projects.nPuzzle10348190;
 
+/*
+Martijn Wardenaar
+10348190
+martijnwardenaar@gmail.com
+ */
+
 public class Puzzle {
 
     private static int NUM_TILES;
