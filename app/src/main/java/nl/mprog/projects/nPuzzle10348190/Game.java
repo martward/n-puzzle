@@ -375,10 +375,8 @@ public class Game extends ActionBarActivity {
                 newImageWidth = (int)((newImageHeight*1.00) / imageHeight) * imageWidth;
             }
         }else if(imageHeight <= imageWidth){
-            if(imageWidth > screenWidth - 100){
-                newImageWidth = screenWidth - 100;
-                newImageHeight = (int)(((newImageWidth * 1.00) / imageWidth) * imageHeight);
-            }
+            newImageWidth = screenWidth - 100;
+            newImageHeight = (int)(((newImageWidth * 1.00) / imageWidth) * imageHeight);
         }
         IMAGE = Bitmap.createScaledBitmap(img,newImageWidth,newImageHeight,true);
 

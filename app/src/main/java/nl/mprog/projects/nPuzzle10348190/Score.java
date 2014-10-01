@@ -103,7 +103,7 @@ public class Score extends ActionBarActivity {
             }
         }
     };
-    
+
     /*
     Deletes the entire game state and leaves only the difficulty.
      */
@@ -114,6 +114,12 @@ public class Score extends ActionBarActivity {
         editor.commit();
         editor.putInt("difficulty", DIFFICULTY);
         editor.commit();
+    }
+
+    public void onPause(){
+        delete_saved_game();
+        finish();
+        super.onPause();
     }
 
 }
