@@ -12,6 +12,7 @@ another image or to restart.
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -94,6 +95,7 @@ public class Score extends ActionBarActivity {
                     finish();
                     break;
                 case R.id.finishChangeImage:
+                    delete_saved_game();
                     Intent homeIntent = new Intent(context, Home.class);
                     startActivity(homeIntent);
                     finish();
@@ -101,5 +103,17 @@ public class Score extends ActionBarActivity {
             }
         }
     };
+    
+    /*
+    Deletes the entire game state and leaves only the difficulty.
+     */
+    private void delete_saved_game(){
+        SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        editor.putInt("difficulty", DIFFICULTY);
+        editor.commit();
+    }
 
 }

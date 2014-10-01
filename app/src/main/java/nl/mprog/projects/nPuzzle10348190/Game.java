@@ -486,6 +486,9 @@ public class Game extends ActionBarActivity {
     }
 
 
+    /*
+    Deletes the entire game state and leaves only the difficulty.
+     */
     private void delete_saved_game(){
         SharedPreferences pref = getSharedPreferences("AppData", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
